@@ -1,0 +1,66 @@
+import re
+
+# Function to read data from an input file
+def read_input_file(filename):
+    with open(filename, 'r') as file:
+        return file.read()
+
+# Function to remove excess space and comments from the code
+def process_code(code):
+    # Remove comments
+    code = re.sub(r'#.*', '', code)
+    # Remove excess whitespace
+    code = re.sub(r'\s+', ' ', code)
+    return code
+
+# Function to tokenize the remaining code
+def tokenize_code(code):
+    tokens = re.findall(r'\b\w+\b', code)
+    return tokens
+
+# Function to print the code after processing
+def print_processed_code(code):
+    print("Output1 - Code after removing excess space and comments:\n")
+    print(code)
+
+# Function to print tokenized code in tabular form
+def print_tabular_form(tokens):
+    print("\nOutput2 - Tokenized code in tabular form:\n")
+    print("{:<12}{}".format("Category", "Tokens"))
+    print("-" * 25)
+    categories = {
+        "Keywords": ["def", "return", "print"],
+        "Identifiers": [],
+        "Operators": ["=", "+"],
+        "Delimiters": ["(", ")", ":", ","],
+        "Literals": []
+    }
+    for token in tokens:
+        categorized = False
+        for category, keywords in categories.items():
+            if token in keywords:
+                print("{:<12}{}".format(category, token))
+                categorized = True
+                break
+        if not categorized:
+            print("{:<12}{}".format("Identifiers", token))
+
+# Main function
+def main():
+    # Read data from input file
+    input_code = read_input_file("input.txt")
+
+    # Process the code
+    processed_code = process_code(input_code)
+
+    # Tokenize the code
+    tokens = tokenize_code(processed_code)
+
+    # Print processed code
+    print_processed_code(processed_code)
+
+    # Print tokenized code in tabular form
+    print_tabular_form(tokens)
+
+if __name__ == "__main__":
+    main()
